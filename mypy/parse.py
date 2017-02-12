@@ -1315,19 +1315,26 @@ class Parser:
         if s == '(':
             # Parenthesised expression or cast.
             expr = self.parse_parentheses()
+            reveal_type(expr)
         elif s == '[':
             expr = self.parse_list_expr()
+            reveal_type(expr)
         elif s in ['-', '+', 'not', '~']:
             # Unary operation.
             expr = self.parse_unary_expr()
+            reveal_type(expr)
         elif s == 'lambda':
             expr = self.parse_lambda_expr()
+            reveal_type(expr)
         elif s == '{':
             expr = self.parse_dict_or_set_expr()
+            reveal_type(expr)
         elif s == '*' and star_expr_allowed:
             expr = self.parse_star_expr()
+            reveal_type(expr)
         elif s == '`' and self.pyversion[0] == 2:
             expr = self.parse_backquote_expr()
+            reveal_type(expr)
         else:
             if isinstance(current, Name):
                 # Name expression.
@@ -1336,23 +1343,33 @@ class Parser:
                 expr = self.parse_int_expr()
             elif isinstance(current, StrLit):
                 expr = self.parse_str_expr()
+                reveal_type(expr)
             elif isinstance(current, BytesLit):
                 expr = self.parse_bytes_literal()
+                reveal_type(expr)
             elif isinstance(current, UnicodeLit):
+                reveal_type(expr)
                 expr = self.parse_unicode_literal()
             elif isinstance(current, FloatLit):
                 expr = self.parse_float_expr()
+                reveal_type(expr)
             elif isinstance(current, ComplexLit):
                 expr = self.parse_complex_expr()
+                reveal_type(expr)
             elif isinstance(current, Keyword) and s == "yield":
                 # The expression yield from and yield to assign
                 expr = self.parse_yield_or_yield_from_expr()
+                reveal_type(expr)
             elif isinstance(current, EllipsisToken) and (self.pyversion[0] >= 3
                                                          or self.is_stub_file):
                 expr = self.parse_ellipsis()
+                reveal_type(expr)
             else:
                 # Invalid expression.
+                reveal_type(expr)
                 raise self.parse_error()
+            reveal_type(expr)
+        reveal_type(expr)
 
         # Set the line of the expression node, if not specified. This
         # simplifies recording the line number as not every node type needs to
