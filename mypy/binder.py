@@ -258,7 +258,7 @@ class ConditionalTypeBinder:
         key = expr.literal_hash
         enclosers = ([get_declaration(expr)] +
                      [f[key] for f in self.frames
-                      if key in f and is_subtype(type, f[key])])
+                      if key in f])
         return enclosers[-1]
 
     def allow_jump(self, index: int) -> None:
